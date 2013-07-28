@@ -12,6 +12,9 @@
 		var gameView;
 
 		function onLoad() {
+			if (html5clientpreconditions) {
+				html5clientpreconditions();
+			}
 			gameView = new GameView(game, document.getElementById("gameSurface"));
 			onResize();
 			ui.pushController(new MainMenuScreen());
@@ -35,6 +38,7 @@
 			}
 		}
 	</script>
+	<script type="text/javascript" src="../html5clientpreconditions.js"></script>
 </head>
 <body onload="onLoad()" onresize="onResize()">
 	<div id="content">

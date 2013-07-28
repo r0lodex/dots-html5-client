@@ -337,7 +337,7 @@ AIGameScreen.prototype.onGone = function () {
 	ui.freeActionBar();
 }
 
-var NETWORK_GAME_ADDRESS = "localhost:8080/connect-user";
+var NETWORK_GAME_ADDRESS = "localhost:8080";
 var	MSG_TYPE_ERROR = "error";
 var	MSG_TYPE_USERINFO = "UserInfo";
 var	MSG_TYPE_NEWGAME_REQUEST = "RequestNewGame";
@@ -403,7 +403,7 @@ NetworkGameScreen.prototype.onAfterGameMove = function () {
 NetworkGameScreen.prototype.onReadyToConnect = function () {
 	$('#waitingDialogMessage').text('Connecting to server...');
 	var that = this;
-	this.socket = new WebSocket("ws://" + NETWORK_GAME_ADDRESS);
+	this.socket = new WebSocket("ws://" + NETWORK_GAME_ADDRESS + "/connect-user");
 	this.socket.onopen = function() { that.onConnect();	};
 	this.socket.onerror = function(error) { that.onError(error); };
 	this.socket.onmessage = function(event) { that.onMessage(event); };
