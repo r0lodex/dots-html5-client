@@ -51,7 +51,7 @@ function UI() {
 	}
 
 	this.popController = function(count) {
-		if (!count) {
+		if (typeof count == 'undefined') {
 			count = 1;
 		}
 		while (count > 0) {
@@ -73,6 +73,7 @@ function UI() {
 		for (var i = buttons.length - 1; i >= 0; i--) {
 			var button = bar.children('#'+buttons[i].id);
 			button.show();
+			button.unbind('click');
 			button.click(buttons[i].action);
 		};
 	}

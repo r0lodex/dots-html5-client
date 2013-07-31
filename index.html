@@ -12,15 +12,15 @@
 		var gameView;
 
 		function onLoad() {
-			if (html5clientpreconditions) {
+			if (typeof html5clientpreconditions == 'object') {
 				html5clientpreconditions();
 			}
 			gameView = new GameView(game, document.getElementById("gameSurface"));
-			onResize();
+			onResizeWnd();
 			ui.pushController(new MainMenuScreen());
 		};
 
-		function onResize() { 
+		function onResizeWnd() { 
 			var margin = 20;
 			var content = $('#content');
 			content.css('top', margin + "px");
@@ -33,14 +33,14 @@
 			var uiLayer = $('#uiLayer'); 
 			uiLayer.width(content.width());
 			uiLayer.height(content.height());
-			if (gameView) {
-				gameView.draw();
+			if (typeof gameView == 'object') {
+				gameView.draw();	
 			}
 		}
 	</script>
 	<script type="text/javascript" src="../html5clientpreconditions.js"></script>
 </head>
-<body onload="onLoad()" onresize="onResize()">
+<body onload="onLoad()" onresize="onResizeWnd()">
 	<div id="content">
 		<canvas id="gameSurface"></canvas>
 		<div id="actionBar" style="display:none;">
