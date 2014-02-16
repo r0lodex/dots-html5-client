@@ -156,7 +156,6 @@ html, body{
 }
 
 .dialogButtonsPanel {
-	height: 40px;
 	display: block;
 }
 
@@ -168,6 +167,7 @@ html, body{
 	padding: 5px;
 	margin: 5px;
 	border: 1px solid rgb(200, 200, 200);
+	display: inline-block;
 }
 
 .dlgBtn:hover {
@@ -183,7 +183,6 @@ html, body{
 	background: white;
 	display: block;
 	width: 250px;
-	height: 20px;
 	left: 50%;
 	margin-left: -136px;
 	border: 0px solid rgb(200, 200, 200);
@@ -194,16 +193,13 @@ html, body{
 }
 
 #waitingDlgCancelButton {
-	float: right;
     border: 0px;  
     border-radius: 5px;  
     box-shadow: 0 0 5px rgba(0,0,0,0.5);  
     padding: 10px;
-    top: -10px;
-    right: -10px;
-    position: relative;
     background-color: antiquewhite;
     cursor: pointer;
+	float: right;
 }
 
 #gameOverDialogBody {
