@@ -568,11 +568,11 @@ function GameView(game, canvas) {
 	this.drag = false;
 
 	var that = this;
-	if ('onmousemove' in document.documentElement) {
-		this.canvas.addEventListener("mousedown", function(e){ that.onMouseDown(e) }, false);
-		this.canvas.addEventListener("mouseup", function(e){ that.onMouseUp(e) }, false);
-		this.canvas.addEventListener("mousemove", function(e){ that.onMouseMove(e) }, false);
-	} else {
+	
+	this.canvas.addEventListener("mousedown", function(e){ that.onMouseDown(e) }, false);
+	this.canvas.addEventListener("mouseup", function(e){ that.onMouseUp(e) }, false);
+	this.canvas.addEventListener("mousemove", function(e){ that.onMouseMove(e) }, false);
+	if (utils.is_touch_device()) {
 		this.canvas.addEventListener("touchstart", function(e){ that.onMouseDown(e) }, false);
 		this.canvas.addEventListener("touchend", function(e){ that.onMouseUp(e) }, false);
 		this.canvas.addEventListener("touchmove", function(e){ that.onMouseMove(e) }, false);
@@ -758,4 +758,15 @@ GameView.prototype.draw = function () {
 		if (context.setLineDash) {
     		context.setLineDash([]);
     	}
+	}
+
+	var utils = {
+		is_touch_device : function() {  
+		  try {  
+		    document.createEvent("TouchEvent");  
+		    return true;  
+		  } catch (e) {  
+		    return false;  
+		  }  
+		}
 	}

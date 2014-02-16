@@ -123,6 +123,8 @@ html, body{
 	color: #00f;
 	font-family: cursive;
 	cursor: pointer;
+	-moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 .menuItem:nth-child(2n) {
@@ -154,8 +156,8 @@ html, body{
 }
 
 .dialogButtonsPanel {
-	padding-bottom: 15px;
-	height: 25px;
+	height: 40px;
+	display: block;
 }
 
 .dlgBtn {
@@ -181,13 +183,27 @@ html, body{
 	background: white;
 	display: block;
 	width: 250px;
+	height: 20px;
 	left: 50%;
 	margin-left: -136px;
-	border: 1px solid rgb(200, 200, 200);
+	border: 0px solid rgb(200, 200, 200);
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	padding: 10px;
 	margin-top: -65px;
+}
+
+#waitingDlgCancelButton {
+	float: right;
+    border: 0px;  
+    border-radius: 5px;  
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);  
+    padding: 10px;
+    top: -10px;
+    right: -10px;
+    position: relative;
+    background-color: antiquewhite;
+    cursor: pointer;
 }
 
 #gameOverDialogBody {

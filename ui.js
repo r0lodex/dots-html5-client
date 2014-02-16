@@ -32,6 +32,12 @@ function UI() {
 	}
 
 	this.displayView = function (screenId, onDone) {
+		if (ga) {
+			ga('send', 'pageview', {
+			  'page': '/' + screenId,
+			  'title': screenId
+			});
+		}
 		if (screenId == '') {
 			onDone();
 			return;
@@ -127,18 +133,49 @@ MainMenuScreen.prototype.onShow = function () {
 	gameView.draw();
 	ui.changeView('menuScreen', function(){
 		$('#miPlayOnline').click(function(){
-			ui.pushController(new GameConfigScreen('network'));
+			if (ga)
+				ga('send', {
+				  'hitType': 'event',
+				  'eventCategory': 'menu',
+				  'eventAction': 'miPlayOnline'
+				});
+			ui.pushController(new NetworkGameScreen({"gameMode" : 'network', "mapWidth" : 25, "mapHeight" : 30}));
+			//ui.pushController(new GameConfigScreen('network'));
 		});
 		$('#miPlayWithAI').click(function(){
+			if (ga)
+				ga('send', {
+				  'hitType': 'event',
+				  'eventCategory': 'menu',
+				  'eventAction': 'miPlayWithAI'
+				});
 			ui.pushController(new GameConfigScreen('ai'));
 		});
 		$('#miPlayHotSeat').click(function(){
+			if (ga)
+				ga('send', {
+				  'hitType': 'event',
+				  'eventCategory': 'menu',
+				  'eventAction': 'miPlayHotSeat'
+				});
 			ui.pushController(new GameConfigScreen('hotseat'));
 		});
 		$('#miHelp').click(function(){
+			if (ga)
+				ga('send', {
+				  'hitType': 'event',
+				  'eventCategory': 'menu',
+				  'eventAction': 'miHelp'
+				});
 			window.open('http://en.wikipedia.org/wiki/Dots_(game)')
 		});
 		$('#miAbout').click(function(){
+			if (ga)
+				ga('send', {
+				  'hitType': 'event',
+				  'eventCategory': 'menu',
+				  'eventAction': 'miAbout'
+				});
 			ui.pushController(new AboutScreen());
 		});
 	});
@@ -253,6 +290,16 @@ GameOverScreen.prototype.onShow = function () {
 			});
 		});
 	});
+
+	if (ga) {
+		ga('send', {
+		  'hitType': 'event',
+		  'eventCategory': 'gameOver',
+		  'eventAction': ui.currentController.constructor.name + '.onGameOver',
+		  'eventLabel': gameResult,
+		  'eventValue': captured[PLAYER2_COLOR] + captured[PLAYER1_COLOR]
+		});
+	}
 }
 
 function HotseatGameScreen(config) {
@@ -402,13 +449,23 @@ NetworkGameScreen.prototype.onAfterGameMove = function () {
 }
 
 NetworkGameScreen.prototype.onReadyToConnect = function () {
-	$('#waitingDialogMessage').text('Connecting to server...');
 	var that = this;
+	$('#waitingDialogMessage').text('Connecting to server...');
+	$('#waitingDlgCancelButton').click(function() {
+		that.exitOnlineGame();
+	});
 	this.socket = new WebSocket("ws://" + NETWORK_GAME_ADDRESS + "/connect-user");
 	this.socket.onopen = function() { that.onConnect();	};
 	this.socket.onerror = function(error) { that.onError(error); };
 	this.socket.onmessage = function(event) { that.onMessage(event); };
 	this.socket.onclose = function(event) { that.onClose(event); };
+	if (ga) {
+		ga('send', {
+		  'hitType': 'event',
+		  'eventCategory': 'waiting',
+		  'eventAction': 'connectingToServer',
+		});
+	}
 }
 
 NetworkGameScreen.prototype.onConnect = function () {
@@ -417,15 +474,40 @@ NetworkGameScreen.prototype.onConnect = function () {
 	this.socket.send(JSON.stringify({Type:MSG_TYPE_USERINFO, Data: JSON.stringify(user) }));
 	this.socket.send(JSON.stringify({Type:MSG_TYPE_NEWGAME_REQUEST, Data: "" }));
 	$('#waitingDialogMessage').text('Waiting for opponent...');
+	$('#waitingDlgCancelButton').click(function() {
+		that.exitOnlineGame();
+	});
+	if (ga) {
+		ga('send', {
+		  'hitType': 'event',
+		  'eventCategory': 'waiting',
+		  'eventAction': 'waitingForOpponent',
+		});
+	}
 }
 
 NetworkGameScreen.prototype.onClose = function (event) {
 	if (event.wasClean) {
 	    //alert('Соединение закрыто чисто');
-	  } else {
+	} else {
 	    ui.pushController(new GameOverScreen('Connection is interrupted', this.currentPlayerColor));
-	  }
-	  //alert('Код: ' + event.code + ' причина: ' + event.reason);
+	    if (ga) {
+			ga('send', {
+			  'hitType': 'event',
+			  'eventCategory': 'problem',
+			  'eventAction': 'connectionInterrupted',
+			  'eventLabel': 'ErrCode: ' + event.code + ' reason: ' + event.reason,
+			  'eventValue': event.code
+			});
+		}
+	}
+}
+
+NetworkGameScreen.prototype.exitOnlineGame = function () {
+	this.socket.onerror = function(error) {  };
+	this.socket.onclose = function(event) {  };
+	this.socket.close();
+	ui.popController();
 }
 
 NetworkGameScreen.prototype.onMessage = function (event) {
@@ -450,6 +532,13 @@ NetworkGameScreen.prototype.onMessage = function (event) {
 					that.initActionBar();
 				});
 			}, 1000);
+			if (ga) {
+				ga('send', {
+				  'hitType': 'event',
+				  'eventCategory': 'onlineGame',
+				  'eventAction': 'started'
+				});
+			}
 			break;
 		case MSG_TYPE_OPPONENT_DISCONNECTED:
 			ui.pushController(new GameOverScreen('Opponent disconnected', this.currentPlayerColor));
@@ -474,6 +563,13 @@ NetworkGameScreen.prototype.onMessage = function (event) {
 				}
 			}
 			this.appendChatMessage(messageData.Text, game.getEnemyColor(this.currentPlayerColor));
+			if (ga) {
+				ga('send', {
+				  'hitType': 'event',
+				  'eventCategory': 'onlineGame',
+				  'eventAction': 'chatMessage'
+				});
+			}
 			break;
 	}
 }
@@ -486,7 +582,9 @@ NetworkGameScreen.prototype.initActionBar = function (event) {
 	var that = this;
 	ui.showActionBar([
 		{id:"panelBtnHome", action:function(){
-			ui.popController(2);
+			if (confirm("You are really want to exit this game?")) {
+				that.exitOnlineGame();
+			}
 		}}, 
 		{id:"panelBtnChat", action: function(){
 			that.unreadMsgs = 0;
