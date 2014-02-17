@@ -32,7 +32,7 @@ function UI() {
 	}
 
 	this.displayView = function (screenId, onDone) {
-		if (ga) {
+		if (typeof ga != 'undefined') {
 			ga('send', 'pageview', {
 			  'page': '/' + screenId,
 			  'title': screenId
@@ -291,7 +291,7 @@ GameOverScreen.prototype.onShow = function () {
 		});
 	});
 
-	if (ga) {
+	if (typeof ga != 'undefined') {
 		ga('send', {
 		  'hitType': 'event',
 		  'eventCategory': 'gameOver',
@@ -459,7 +459,7 @@ NetworkGameScreen.prototype.onReadyToConnect = function () {
 	this.socket.onerror = function(error) { that.onError(error); };
 	this.socket.onmessage = function(event) { that.onMessage(event); };
 	this.socket.onclose = function(event) { that.onClose(event); };
-	if (ga) {
+	if (typeof ga != 'undefined') {
 		ga('send', {
 		  'hitType': 'event',
 		  'eventCategory': 'waiting',
@@ -477,7 +477,7 @@ NetworkGameScreen.prototype.onConnect = function () {
 	$('#waitingDlgCancelButton').click(function() {
 		that.exitOnlineGame();
 	});
-	if (ga) {
+	if (typeof ga != 'undefined') {
 		ga('send', {
 		  'hitType': 'event',
 		  'eventCategory': 'waiting',
@@ -491,7 +491,7 @@ NetworkGameScreen.prototype.onClose = function (event) {
 	    //alert('Соединение закрыто чисто');
 	} else {
 	    ui.pushController(new GameOverScreen('Connection is interrupted', this.currentPlayerColor));
-	    if (ga) {
+	    if (typeof ga != 'undefined') {
 			ga('send', {
 			  'hitType': 'event',
 			  'eventCategory': 'problem',
@@ -532,7 +532,7 @@ NetworkGameScreen.prototype.onMessage = function (event) {
 					that.initActionBar();
 				});
 			}, 1000);
-			if (ga) {
+			if (typeof ga != 'undefined') {
 				ga('send', {
 				  'hitType': 'event',
 				  'eventCategory': 'onlineGame',
@@ -563,7 +563,7 @@ NetworkGameScreen.prototype.onMessage = function (event) {
 				}
 			}
 			this.appendChatMessage(messageData.Text, game.getEnemyColor(this.currentPlayerColor));
-			if (ga) {
+			if (typeof ga != 'undefined') {
 				ga('send', {
 				  'hitType': 'event',
 				  'eventCategory': 'onlineGame',

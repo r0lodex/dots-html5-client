@@ -196,7 +196,7 @@ html, body{
     border: 0px;  
     border-radius: 5px;  
     box-shadow: 0 0 5px rgba(0,0,0,0.5);  
-    padding: 10px;
+    padding: 3px;
     background-color: antiquewhite;
     cursor: pointer;
 	float: right;
