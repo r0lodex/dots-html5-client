@@ -385,7 +385,7 @@ AIGameScreen.prototype.onGone = function () {
 	ui.freeActionBar();
 }
 
-var NETWORK_GAME_ADDRESS = "localhost:8080";
+var NETWORK_GAME_ADDRESS = "phlox.com.ua:8081";//replace with your domain
 var	MSG_TYPE_ERROR = "error";
 var	MSG_TYPE_USERINFO = "UserInfo";
 var	MSG_TYPE_NEWGAME_REQUEST = "RequestNewGame";
