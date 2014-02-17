@@ -7,12 +7,13 @@
 	<script type="text/javascript" src="dots.js"></script>
 	<script type="text/javascript" src="ui.js"></script>
 	<script type="text/javascript" src="jquery-2.0.0.min.js"></script>
+	<script type="text/javascript" src="../html5clientpreconditions.js"></script>
 	<script type="text/javascript">
 		var game = new Game(200, 200);
 		var gameView;
 
 		function onLoad() {
-			if (typeof html5clientpreconditions == 'object') {
+			if (typeof html5clientpreconditions != 'undefined') {
 				html5clientpreconditions();
 			}
 			gameView = new GameView(game, document.getElementById("gameSurface"));
@@ -38,7 +39,7 @@
 			}
 		}
 	</script>
-	<script type="text/javascript" src="../html5clientpreconditions.js"></script>
+	
 	<!-- Google Analytics -->
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

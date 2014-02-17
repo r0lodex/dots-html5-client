@@ -264,8 +264,8 @@ GameOverScreen.prototype.onShow = function () {
 	if (captured[PLAYER1_COLOR] == captured[PLAYER2_COLOR]) {
 		gameResult = "Standoff :|";
 	} else if (this.currentPlayerColor) {
-		if (((captured[PLAYER1_COLOR] > captured[PLAYER2_COLOR]) && this.currentPlayerColor == PLAYER1_COLOR) ||
-			((captured[PLAYER2_COLOR] > captured[PLAYER1_COLOR]) && this.currentPlayerColor == PLAYER2_COLOR)) {
+		if (((captured[PLAYER1_COLOR] > captured[PLAYER2_COLOR]) && this.currentPlayerColor == PLAYER2_COLOR) ||
+			((captured[PLAYER2_COLOR] > captured[PLAYER1_COLOR]) && this.currentPlayerColor == PLAYER1_COLOR)) {
 			gameResult = "You Win! =)";
 		} else {
 			gameResult = "You Lose... ;(";
